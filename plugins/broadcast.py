@@ -1,25 +1,3 @@
-"""
-Apache License 2.0
-Copyright (c) 2022 @PYRO_BOTZ 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-Telegram Link : https://t.me/PYRO_BOTZ 
-Repo Link : https://github.com/TEAM-PYRO-BOTZ/PYRO-RENAME-BOT
-License Link : https://github.com/TEAM-PYRO-BOTZ/PYRO-RENAME-BOT/blob/main/LICENSE
-"""
 
 import os
 import time
@@ -37,9 +15,9 @@ logger.setLevel(logging.INFO)
  
 @Client.on_message(filters.command("users") & filters.user(ADMIN))
 async def get_stats(bot :Client, message: Message):
-    mr = await message.reply('**𝙰𝙲𝙲𝙴𝚂𝚂𝙸𝙽𝙶 𝙳𝙴𝚃𝙰𝙸𝙻𝚂.....**')
+    mr = await message.reply('**ᴀᴄᴄᴇꜱꜱɪɴɢ ᴅᴇᴛᴀɪʟꜱ.....**')
     total_users = await db.total_users_count()
-    await mr.edit( text=f"❤️‍🔥 TOTAL USER'S = `{total_users}`")
+    await mr.edit( text=f"❤️‍ ᴛᴏᴛᴀʟ ᴜꜱᴇʀ'ꜱ = `{total_users}`")
 
 @Client.on_message(filters.command("broadcast") & filters.user(ADMIN) & filters.reply)
 async def broadcast_handler(bot: Client, m: Message):

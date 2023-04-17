@@ -6,87 +6,89 @@ import humanize
 import random
 from helper.txt import mr
 from helper.database import db
-from config import START_PIC, FLOOD, ADMIN 
+from config import START_PIC, FLOOD, ADMIN
 
 
 @Client.on_message(filters.private & filters.command(["start"]))
 async def start(client, message):
     user = message.from_user
     if not await db.is_user_exist(user.id):
-        await db.add_user(user.id)             
-    txt=f"👋 Hey {user.mention} \n I'm A Simple Reanmer Bot with oermanent Thumbnail & Custom Caption Support!!"
-    button=InlineKeyboardMarkup([[
+        await db.add_user(user.id)
+    txt = f"👋 Hey {user.mention} \n I'm A Simple Reanmer Bot with Permanent Thumbnail & Custom Caption Support!!"
+    button = InlineKeyboardMarkup([[
         InlineKeyboardButton("ᴄʜᴀɴɴᴇʟ", url='https://t.me/manga_legion')
-        ],[
+    ], [
         InlineKeyboardButton('ᴀʙᴏᴜᴛ', callback_data='about'),
         InlineKeyboardButton('ʜᴇʟᴘ', callback_data='help')
-        ]])
+    ]])
     if START_PIC:
-        await message.reply_photo(START_PIC, caption=txt, reply_markup=button)       
+        await message.reply_photo(START_PIC, caption=txt, reply_markup=button)
     else:
         await message.reply_text(text=txt, reply_markup=button, disable_web_page_preview=True)
-   
+
 
 @Client.on_message(filters.private & (filters.document | filters.audio | filters.video))
 async def rename_start(client, message):
     file = getattr(message, message.media.value)
     filename = file.file_name
-    filesize = humanize.naturalsize(file.file_size) 
+    filesize = humanize.naturalsize(file.file_size)
     fileid = file.file_id
     try:
         text = f"""**__What do you want me to do with this file.?__**\n\n**File Name** :- `{filename}`\n\n**File Size** :- `{filesize}`"""
-        buttons = [[ InlineKeyboardButton("📝 ꜱᴛᴀʀᴛ ʀᴇɴᴀᴍᴇ 📝", callback_data="rename") ],
-                   [ InlineKeyboardButton("✖️ ᴄᴀɴᴄᴇʟ ✖️", callback_data="cancel") ]]
+        buttons = [[InlineKeyboardButton("📝 ꜱᴛᴀʀᴛ ʀᴇɴᴀᴍᴇ 📝", callback_data="rename")],
+                   [InlineKeyboardButton("✖️ ᴄᴀɴᴄᴇʟ ✖️", callback_data="cancel")]]
         await message.reply_text(text=text, reply_to_message_id=message.id, reply_markup=InlineKeyboardMarkup(buttons))
         await sleep(FLOOD)
     except FloodWait as e:
         await sleep(e.value)
         text = f"""**__What do you want me to do with this file.?__**\n\n**File Name** :- `{filename}`\n\n**File Size** :- `{filesize}`"""
-        buttons = [[ InlineKeyboardButton("📝 ꜱᴛᴀʀᴛ ʀᴇɴᴀᴍᴇ 📝", callback_data="rename") ],
-                   [ InlineKeyboardButton("✖️ ᴄᴀɴᴄᴇʟ ✖️", callback_data="cancel") ]]
+        buttons = [[InlineKeyboardButton("📝 ꜱᴛᴀʀᴛ ʀᴇɴᴀᴍᴇ 📝", callback_data="rename")],
+                   [InlineKeyboardButton("✖️ ᴄᴀɴᴄᴇʟ ✖️", callback_data="cancel")]]
         await message.reply_text(text=text, reply_to_message_id=message.id, reply_markup=InlineKeyboardMarkup(buttons))
     except:
         pass
 
+
 @Client.on_callback_query()
 async def cb_handler(client, query: CallbackQuery):
-    data = query.data 
+    data = query.data
     if data == "start":
         await query.message.edit_text(
-            text=f"""👋 Hey {user.mention} \n I'm A Simple Reanmer Bot with Permanent Thumbnail & Custom Caption Support!!"""
-    button=InlineKeyboardMarkup([[
-        InlineKeyboardButton("ᴄʜᴀɴɴᴇʟ", url='https://t.me/manga_legion')
-        ],[
-        InlineKeyboardButton('ᴀʙᴏᴜᴛ', callback_data='about'),
-        InlineKeyboardButton('ʜᴇʟᴘ', callback_data='help')
-        ]])
-                )
+            text=f"""👋 Hey {user.mention} \n I'm A Simple Reanmer Bot with Permanent Thumbnail & Custom Caption Support!!""",
+            button=InlineKeyboardMarkup([[
+                InlineKeyboardButton(
+                    "ᴄʜᴀɴɴᴇʟ", url='https://t.me/manga_legion')
+            ], [
+                InlineKeyboardButton('ᴀʙᴏᴜᴛ', callback_data='about'),
+                InlineKeyboardButton('ʜᴇʟᴘ', callback_data='help')
+            ]])
+        )
     elif data == "help":
         await query.message.edit_text(
             text=mr.HELP_TXT,
-            reply_markup=InlineKeyboardMarkup( [[
-               InlineKeyboardButton("🔒 𝙲𝙻𝙾𝚂𝙴", callback_data = "close"),
-               InlineKeyboardButton("◀️ 𝙱𝙰𝙲𝙺", callback_data = "start")
-               ]]
+            reply_markup=InlineKeyboardMarkup([[
+                InlineKeyboardButton("🔒 ᴄʟᴏꜱᴇ", callback_data="close"),
+                InlineKeyboardButton("◀️ ʙᴀᴄᴋ", callback_data="start")
+            ]]
             )
         )
     elif data == "about":
         await query.message.edit_text(
             text=mr.ABOUT_TXT.format(client.mention),
-            disable_web_page_preview = True,
-            reply_markup=InlineKeyboardMarkup( [[
-               InlineKeyboardButton("🔒 𝙲𝙻𝙾𝚂𝙴", callback_data = "close"),
-               InlineKeyboardButton("◀️ 𝙱𝙰𝙲𝙺", callback_data = "start")
-               ]]
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup([[
+                InlineKeyboardButton("🔒 ᴄʟᴏꜱᴇ", callback_data="close"),
+                InlineKeyboardButton("◀️ ʙᴀᴄᴋ", callback_data="start")
+            ]]
             )
         )
     elif data == "dev":
         await query.message.edit_text(
             text=mr.DEV_TXT,
-            reply_markup=InlineKeyboardMarkup( [[
-               InlineKeyboardButton("🔒 𝙲𝙻𝙾𝚂𝙴", callback_data = "close"),
-               InlineKeyboardButton("◀️ 𝙱𝙰𝙲𝙺", callback_data = "start")
-               ]]
+            reply_markup=InlineKeyboardMarkup([[
+                InlineKeyboardButton("🔒 ᴄʟᴏꜱᴇ", callback_data="close"),
+                InlineKeyboardButton("◀️ ʙᴀᴄᴋ", callback_data="start")
+            ]]
             )
         )
     elif data == "close":
